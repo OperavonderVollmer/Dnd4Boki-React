@@ -1,0 +1,22 @@
+.everythingContainer{
+    display: flex;
+    height: 100vh;
+  }
+  
+  .mainContainer{    
+    margin:auto;
+    height: max-content;
+    min-height: 90vh;
+    height: max-content;  
+    display: grid;
+    border-radius: 15px;
+    padding: 1vh 1vw;
+  }
+  
+  .bigContainer {  
+    min-width: 60vw;
+  }
+  
+  .sideContainer {
+    min-width: 30vw;
+  }
