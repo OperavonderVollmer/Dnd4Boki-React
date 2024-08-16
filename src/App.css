@@ -4,6 +4,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-blend-mode: multiply;
+  background-attachment: fixed;
   height: 100vh;
 }
 

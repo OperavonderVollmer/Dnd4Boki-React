@@ -1,11 +1,12 @@
-import React, {useState} from "react";
-import {SliderPicker, AlphaPicker} from "react-color";
+import React, {useEffect, useState} from "react";
+import {SliderPicker} from "react-color";
 import Cookies from "js-cookie";
 import "./ConfigMenu.css";
 
 const ConfigMenu = () => {
     const [bgImageValue, setBgImageValue] = useState("");
     const [panelColor, setPanelColor] = useState(`rgb(${Cookies.get("panelColor")})`);
+    const [buttonColor, setButtonColor] = useState(`rgb(${Cookies.get("buttonColor")})`);
     const fontColor = Cookies.get("fontColor");
     const [fontSize, setFontSize] = useState(Number(Cookies.get("fontSize")));
 
@@ -26,11 +27,16 @@ const ConfigMenu = () => {
 
     const handlePanelColorChange = (color: {rgb: {r: any; g: any; b: any}}) => {
         const newColor = `${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, 0.7`;
+        const newbtnColor = `${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, 1`;
         setPanelColor(`rgb(${newColor})`);
+        setButtonColor(`rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, 1)`);
         Cookies.set("panelColor", newColor, {expires: 7});
+        Cookies.set("buttonColor", newbtnColor, {expires: 7});
+        console.log(buttonColor);
         console.log(`New Color: ${newColor}`);
     };
-
+    console.log("buttonColor" + Cookies.get("buttonColor"));
+    console.log("panelColor" + Cookies.get("panelColor"));
     const handleFontColorChange = (event: any) => {
         let c = event.target.value;
         c ? Cookies.set("fontColor", c, {expires: 7}) && window.location.reload() : null;
@@ -51,17 +57,16 @@ const ConfigMenu = () => {
                     <div className="bgConfigContainer configContainer">
                         <label htmlFor="bgImage">Background Image</label>
                         <input name="bgImage" id="bgImage" type="text" value={bgImageValue} onChange={handleImageInputChange} />
-                        <button id="bgImageSubmit" onClick={() => handleImageSubmit("submit")}>
+                        <button id="bgImageSubmit" className={`configButton`} style={{backgroundColor: buttonColor, color: fontColor}} onClick={() => handleImageSubmit("submit")}>
                             Submit
                         </button>
-                        <button id="bgImageSubmit" onClick={() => handleImageSubmit("reset")}>
+                        <button id="bgImageReset" className={`configButton`} style={{backgroundColor: buttonColor, color: fontColor}} onClick={() => handleImageSubmit("reset")}>
                             Reset
                         </button>
                     </div>
                     <div className="panelColorConfigContainer configContainer">
                         <label htmlFor="panelColor">Panel Color</label>
                         <SliderPicker color={`${panelColor}`} onChange={handlePanelColorChange} />
-                        <AlphaPicker />
                     </div>
                     <div className="fontColorConfigContainer configContainer">
                         <label htmlFor="fontColor">Font Color</label>
@@ -75,8 +80,8 @@ const ConfigMenu = () => {
                     </div>
                     <div className="fontSizeConfigContainer configContainer">
                         <label htmlFor="fontSize">Font Size</label>
-                        <input type="text" name="fontSize" id="fontSize" value={fontSize} onChange={handleFontSizeChange} />
-                        <button id="fontSizeSubmit" onClick={handleFontSizeSubmit}>
+                        <input type="text" className="fontSize" name="fontSize" id="fontSize" value={fontSize} onChange={handleFontSizeChange} />
+                        <button id="fontSizeSubmit" className="configButton" style={{backgroundColor: buttonColor, color: fontColor}} onClick={handleFontSizeSubmit}>
                             Submit
                         </button>
                     </div>

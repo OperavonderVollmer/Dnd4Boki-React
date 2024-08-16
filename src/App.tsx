@@ -3,12 +3,12 @@ import "./App.css";
 import CharacterSheet from "./components/CharacterSheet";
 import Cookies from "js-cookie";
 import ConfigMenu from "./components/ConfigMenu";
-
 const App = () => {
     const defaults = {
         fontSize: "10",
         fontColor: "white",
         panelColor: "32, 43, 56, 0.7",
+        buttonColor: "32, 43, 56, 1",
         backgroundImage: "/background-image.jpg",
     };
 
@@ -18,6 +18,7 @@ const App = () => {
         fontSize: Cookies.get("fontSize") || defaults.fontSize,
         fontColor: Cookies.get("fontColor") || defaults.fontColor,
         panelColor: Cookies.get("panelColor") || defaults.panelColor,
+        buttonColor: Cookies.get("buttonColor") || defaults.buttonColor,
         backgroundImage: Cookies.get("backgroundImage") || defaults.backgroundImage,
     });
 
@@ -27,6 +28,7 @@ const App = () => {
                 fontSize: Cookies.get("fontSize") || defaults.fontSize,
                 fontColor: Cookies.get("fontColor") || defaults.fontColor,
                 panelColor: Cookies.get("panelColor") || defaults.panelColor,
+                buttonColor: Cookies.get("buttonColor") || defaults.buttonColor,
                 backgroundImage: Cookies.get("backgroundImage") || defaults.backgroundImage,
             });
         };
@@ -34,6 +36,7 @@ const App = () => {
         window.addEventListener("storage", updateConfig);
         Cookies.set("fontSize", config.fontSize, {expires: 7});
         Cookies.set("panelColor", config.panelColor, {expires: 7});
+        Cookies.set("buttonColor", config.buttonColor, {expires: 7});
         Cookies.set("backgroundImage", config.backgroundImage, {expires: 7});
     }, [config]);
 
@@ -43,6 +46,16 @@ const App = () => {
         color: `${config.fontColor}`,
         backgroundImage: `url(${config.backgroundImage})`,
     };
+
+    useEffect(() => {
+        if (Cookies.get("firstRun")) {
+            console.log("Cookies Loaded");
+        } else {
+            console.log("THIS IS THE FIRST RUN");
+            Cookies.set("firstRun", "yes", {expires: 7});
+            window.location.reload();
+        }
+    });
 
     return (
         <div className="body" style={bodyStyle}>
